@@ -33,7 +33,7 @@ Then, open `http://localhost:3000/` on your browser
 - [ ] Support Windows
 - [x] Save chat history to disk
 - [ ] Implement context memory
-- [ ] Conversation history
+- [x] Conversation history
 - [ ] Interface for tweaking parameters
 - [ ] Better guide / documentation
-- [ ] Ability to stop / regenerate response
+- [x] Ability to stop / regenerate response

@@ -3,12 +3,13 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const axios = require('axios').default;
+const config = require('../bin/config');
 const { Server: ServerIO } = require("socket.io");
 
 const { spawn } = require('node:child_process');
-const proc = spawn('/bin/sh', [
-  path.join(__dirname, '../bin/run-chat.sh')
-]);
+const pathExecAbs = path.join(__dirname, '../bin', config.EXECUTABLE_FILE);
+const modelPathAbs = path.join(__dirname, '../bin', config.MODEL_FILE);
+const proc = spawn(pathExecAbs, config.ARGUMENTS({ modelPathAbs }));
 
 const app = express();
 app.get('/', (req, res) => res.send(''));
@@ -86,7 +87,13 @@ data.io.on('connection', (socket) => {
   });
 
   socket.on('action_stop', () => {
-    // TODO
+    console.log('STOP')
+    if (data.current.chatId) {
+      // if it is responding to a request, stop
+      console.log('SIGINT')
+      proc.kill('SIGINT');
+    }
+    // else, do nothing
   });
 });
 

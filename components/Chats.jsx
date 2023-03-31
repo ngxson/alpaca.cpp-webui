@@ -63,7 +63,7 @@ function Chats({
                 <p
                   key={index}
                   className={`py-6 px-24 text-xxl${
-                    message.role === "user" ? " bg-transparent" : " bg-white bg-opacity-10"
+                    message.role === "user" ? " bg-transparent" : " bg-white bg-opacity-5"
                   } break-words`}
                   style={{ whiteSpace: 'pre-wrap' }}
                 >

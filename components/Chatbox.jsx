@@ -13,7 +13,9 @@ function Chatbox({
   globalState,
   setGlobalState,
 }) {
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
+  console.log(globalState)
+  const loading = !!globalState.assistantTypingMsgId;
 
   const handleChange = (event) => {
     setUserText(event.target.value);
@@ -26,7 +28,7 @@ function Chatbox({
         (chat) => chat.id === selectedChat
       );
       const selectedChatData = chats[selectedIndex];
-      console.log(selectedChatData);
+      //console.log(selectedChatData);
 
       // add message
       const newAssistantMsgId = uuidv4();
@@ -72,12 +74,30 @@ function Chatbox({
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(event);
+    }
+  }
+
   return (
     // <div className="h-15% absolute bottom-0 w-4/6  border-t md:border-t-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:bg-vert-light-gradient bg-white fade">
     <div
       className="pl-[260px] absolute bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent 
       md:dark:border-transparent dark:bg-gray-800"
     >
+      {loading && <div className="flex ml-1 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center pt-2">
+        <button className="btn relative btn-neutral border border-gray-500 py-1 px-4 rounded" onClick={() => {
+          window._socket.emit('action_stop', {});
+        }}>
+          <div className="flex w-full items-center justify-center gap-2">
+            <StopIcon />
+            Stop generate
+          </div>
+        </button>
+      </div>}
+
       <form
         className="flex flex-col flex-grow mx-auto my-4 py-3 px-3 relative border border-black/10 bg-white 
         dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md md:max-w-2xl lg:max-w-3xl md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-3xl"
@@ -105,6 +125,7 @@ function Chatbox({
               e.target.style.height = "auto";
               e.target.style.height = `${e.target.scrollHeight}px`;
             }}
+            onKeyDown={handleKeyPress}
           ></textarea>
         </div>
 
@@ -137,3 +158,8 @@ function Chatbox({
 }
 
 export default Chatbox;
+
+
+const StopIcon = () => <svg stroke="currentColor" fill="none" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" class="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+
+const RefreshIcon = () => <svg stroke="currentColor" fill="none" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
