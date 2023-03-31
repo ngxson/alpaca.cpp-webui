@@ -30,19 +30,27 @@ function Chatbox({
 
       // add message
       const newAssistantMsgId = uuidv4();
+      const newMsgUser = {
+        id: uuidv4(),
+        chat_id: selectedChat,
+        role: 'user',
+        content: userText,
+        createdAt: Date.now(),
+      }
+      const newMsgAssitant = {
+        id: newAssistantMsgId,
+        chat_id: selectedChat,
+        role: 'assistant',
+        content: '',
+        createdAt: Date.now(),
+      }
       const newChat = {
         ...selectedChatData,
-        messages: [...selectedChatData.messages, {
-          id: uuidv4(),
-          role: 'user',
-          content: userText,
-          createdAt: Date.now(),
-        }, {
-          id: newAssistantMsgId,
-          role: 'assistant',
-          content: '',
-          createdAt: Date.now(),
-        }],
+        messages: [
+          ...selectedChatData.messages,
+          newMsgUser,
+          newMsgAssitant,
+        ],
       };
       setChats(chats => chats.map(c => c.id === newChat.id ? newChat : c));
       setGlobalState(state => ({...state, assistantTypingMsgId: newAssistantMsgId}));
@@ -55,6 +63,10 @@ function Chatbox({
       };
       window._socket.emit('ask', req);
       setUserText('');
+
+      // save to backend
+      await axios.post('/api/messages', newMsgUser).catch(console.error);
+      await axios.post('/api/messages', newMsgAssitant).catch(console.error);
     } else {
       setError("Please enter a valid prompt");
     }

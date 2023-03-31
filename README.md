@@ -31,8 +31,9 @@ Then, open `http://localhost:3000/` on your browser
 ## TODO
 
 - [ ] Support Windows
-- [ ] Save history to disk
+- [x] Save chat history to disk
 - [ ] Implement context memory
 - [ ] Conversation history
 - [ ] Interface for tweaking parameters
 - [ ] Better guide / documentation
+- [ ] Ability to stop / regenerate response

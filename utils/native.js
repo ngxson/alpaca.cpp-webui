@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const express = require('express');
+const axios = require('axios').default;
 const { Server: ServerIO } = require("socket.io");
 
 const { spawn } = require('node:child_process');
@@ -13,6 +14,7 @@ const app = express();
 app.get('/', (req, res) => res.send(''));
 const server = http.createServer(app);
 let data = {
+  backend: 'localhost:3000',
   isReady: false,
   current: {},
   io: new ServerIO(server, {
@@ -34,6 +36,13 @@ proc.stdout.on('data', (buf) => {
   } else if (data.current.chatId) {
     data.current.output += str.replace(/\u001b\[[0-9]+m/g, ''); // terminal color
     data.io.emit('update', data.current);
+    // save to backend
+    axios.post(`http://${data.backend}/api/messages`, {
+      id: data.current.messageId,
+      chat_id: data.current.chatId,
+      role: 'assistant',
+      content: data.current.output,
+    }).catch(e => console.error(e.message));
   }
 });
 
@@ -66,6 +75,11 @@ const ask = async ({ chatId, messageId, input }) => {
 
 /////////////////////////
 data.io.on('connection', (socket) => {
+  const fromHost = (socket.handshake.query || {}).from_host || 'localhost:3000';
+  data.backend = fromHost;
+
+  console.log('New connection from', fromHost);
+
   socket.on('ask', ({ chatId, messageId, input }) => {
     console.log('user input: ', { chatId, messageId, input });
     ask({ chatId, messageId, input });

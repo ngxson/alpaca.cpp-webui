@@ -5,7 +5,11 @@ export default ({ setChats, setGlobalState }) => {
   useEffect(() => {
     // connect to socket server
     if (!window) window = {};
-    window._socket = SocketIOClient.connect(`ws://${window.location.hostname}:13030`);
+    window._socket = SocketIOClient.connect(`ws://${window.location.hostname}:13030`, {
+      query: {
+        from_host: window.location.host,
+      },
+    });
 
     const socket = window._socket;
 

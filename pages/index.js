@@ -7,9 +7,10 @@ import Chats from "../components/Chats";
 import ErrorDisplay from "../components/ErrorDisplay";
 import axios from "axios";
 import NativeBridge from "../components/NativeBridge";
+import { getAllChats } from "./api/chats";
 
-export default function Home() {
-  const [chats, setChats] = useState([]);
+export default function Home({ prefetchedChats }) {
+  const [chats, setChats] = useState(prefetchedChats);
   const [selectedChat, setSelectedChat] = useState(null);
   const [userText, setUserText] = useState("");
   const [error, setError] = useState(null);
@@ -19,8 +20,8 @@ export default function Home() {
   });
 
   // Fetch chats from the server instead of local storage
+  /*
   useEffect(() => {
-    /*
     const fetchChats = async () => {
       try {
         const response = await axios.get("/api/chats");
@@ -33,15 +34,15 @@ export default function Home() {
     };
 
     fetchChats();
-    */
-    const FAKE_DATA = [
-      {id: 1, title: 'New Chat', messages: [
-        {role: 'assistant', content: 'Hi, how can I help you?', createdAt: Date.now()},
-      ]}
-    ];
-    setChats(FAKE_DATA);
-    setSelectedChat(1);
+    //const FAKE_DATA = [
+    //  {id: 1, title: 'New Chat', messages: [
+    //    {role: 'assistant', content: 'Hi, how can I help you?', createdAt: Date.now()},
+    //  ]}
+    //];
+    //setChats(FAKE_DATA);
+    //setSelectedChat(1);
   }, []);
+  */
   return (
     <>
       <Head>
@@ -84,3 +85,12 @@ export default function Home() {
     </>
   );
 }
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      prefetchedChats: await getAllChats(),
+    }
+  }
+}
+

@@ -34,3 +34,4 @@ yarn-error.log*
 
 /bin/*
 !/bin/run-chat.sh
+.data

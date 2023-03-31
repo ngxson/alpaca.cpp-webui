@@ -65,6 +65,7 @@ function Chats({
                   className={`py-6 px-24 text-xxl${
                     message.role === "user" ? " bg-transparent" : " bg-white bg-opacity-10"
                   } break-words`}
+                  style={{ whiteSpace: 'pre-wrap' }}
                 >
                   {message.role === "assistant" ? (
                     <></>// <span className="font-semibold">ChatGPT: </span>
