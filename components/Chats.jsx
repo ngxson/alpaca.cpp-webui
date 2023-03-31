@@ -27,7 +27,7 @@ function Chats({
 
   useEffect(() => {
     scrollToBottom();
-  }, [selectedChat]);
+  }, [selectedChat, scrollToBottom]);
 
   useEffect(() => {
     const chat = chats.find(c => c.id === selectedChat);
@@ -37,7 +37,7 @@ function Chats({
       scrollToBottom();
       setPrevMsgCount(msgCount);
     }
-  }, [chats, selectedChat, prevMsgCount]);
+  }, [chats, selectedChat, prevMsgCount, scrollToBottom]);
 
   return (
     <div className="md:pl-[260px] h-screen p-0 m-0 overflow-x-hidden w-full dark:bg-gray-700">

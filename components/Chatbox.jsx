@@ -13,8 +13,6 @@ function Chatbox({
   globalState,
   setGlobalState,
 }) {
-  //const [loading, setLoading] = useState(false);
-  console.log(globalState)
   const loading = !!globalState.assistantTypingMsgId;
 
   const handleChange = (event) => {
@@ -23,6 +21,7 @@ function Chatbox({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (loading) return;
     if (userText.length >= 2) {
       const selectedIndex = chats.findIndex(
         (chat) => chat.id === selectedChat
@@ -131,7 +130,7 @@ function Chatbox({
 
         <button
           type="submit"
-          className={`absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent ${loading ? "loading-icon" : null}`}
+          className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
           disabled={loading}
         >
           {!loading && (

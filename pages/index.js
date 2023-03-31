@@ -18,31 +18,6 @@ export default function Home({ prefetchedChats }) {
   const [globalState, setGlobalState] = useState({
     assistantTypingMsgId: null,
   });
-
-  // Fetch chats from the server instead of local storage
-  /*
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        const response = await axios.get("/api/chats");
-        if (response.data) {
-          setChats(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching chats:", error);
-      }
-    };
-
-    fetchChats();
-    //const FAKE_DATA = [
-    //  {id: 1, title: 'New Chat', messages: [
-    //    {role: 'assistant', content: 'Hi, how can I help you?', createdAt: Date.now()},
-    //  ]}
-    //];
-    //setChats(FAKE_DATA);
-    //setSelectedChat(1);
-  }, []);
-  */
   return (
     <>
       <Head>

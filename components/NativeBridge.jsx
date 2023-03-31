@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import SocketIOClient from "socket.io-client";
 
-export default ({ setChats, setGlobalState }) => {
+const NativeBridge = ({ setChats, setGlobalState }) => {
   useEffect(() => {
     // connect to socket server
     if (!window) window = {};
@@ -57,7 +57,10 @@ export default ({ setChats, setGlobalState }) => {
 
     // socket disconnet onUnmount if exists
     if (socket) return () => socket.disconnect();
+  // eslint-disable-next-line
   }, []);
 
   return <></>;
 };
+
+export default NativeBridge;

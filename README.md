@@ -17,16 +17,24 @@ Screenshot:
 
 ## How to use
 
-1. Download `gpt4all-lora-quantized.bin` and `gpt4all-lora-quantized-*-x86` from [github.com/nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all), put them into `bin` folder
-2. Edit `bin/run-chat.sh` if needed
-3. Run these commands:
+**Step 1**: Clone this repository to your local machine
+
+**Step 2**: Download the model and binary file to run the model. You have some options:
+
+(Recommended) `Alpaca.cpp` and `Alpaca-native-4bit-ggml` model => This combination give me very convincing responses most of the time
+- Download `chat` binary file and place it under `bin` folder: https://github.com/antimatter15/alpaca.cpp/releases
+- Download `ggml-alpaca-7b-q4.bin` and place it under `bin` folder: https://huggingface.co/Sosaka/Alpaca-native-4bit-ggml/blob/main/ggml-alpaca-7b-q4.bin
+
+Alternatively, you can use `gpt4all`: Download `gpt4all-lora-quantized.bin` and `gpt4all-lora-quantized-*-x86` from [github.com/nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all), put them into `bin` folder
+
+**Step 3**: Run these commands
 
 ```
 npm i
-npm run dev
+npm start
 ```
 
-Then, open `http://localhost:3000/` on your browser
+Then, open `http://localhost:13000/` on your browser
 
 ## TODO
 
@@ -35,5 +43,5 @@ Then, open `http://localhost:3000/` on your browser
 - [ ] Implement context memory
 - [x] Conversation history
 - [ ] Interface for tweaking parameters
-- [ ] Better guide / documentation
+- [x] Better guide / documentation
 - [x] Ability to stop / regenerate response
