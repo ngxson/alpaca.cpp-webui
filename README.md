@@ -2,6 +2,7 @@
 
 Thanks to:
 - [github.com/AidanGuarniere/chatGPT-UI-template](https://github.com/AidanGuarniere/chatGPT-UI-template)
+- [github.com/antimatter15/alpaca.cpp](https://github.com/antimatter15/alpaca.cpp) and [github.com/ggerganov/llama.cpp](https://github.com/ggerganov/llama.cpp)
 - [github.com/nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all)
 - [Suggestion for parameters](https://github.com/antimatter15/alpaca.cpp/issues/171)
 
