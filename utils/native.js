@@ -29,18 +29,21 @@ const DEFAULT_ARGUMENTS = {
   'ctx_size': '5121',
   'repeat_last_n': '128',
   '__additional': '--interactive-start',
+  '__context_memory': '0',
 };
 
 const getArguments = () => {
   const userConfig = getUserConfig();
   const mergedConfig = {...DEFAULT_ARGUMENTS, ...userConfig};
   const additionalArgs = mergedConfig['__additional'];
-  delete mergedConfig['__additional'];
+
   const args = [];
   for (const opt in mergedConfig) {
+    if (opt.startsWith('__')) continue; // skip "__arg_name"
     args.push(`--${opt}`);
     args.push(mergedConfig[opt]);
   }
+
   additionalArgs.split(' ').forEach(opt => args.push(opt));
   args.push('--model');
   args.push(modelPathAbs);
@@ -75,20 +78,24 @@ const runProc = () => {
   }
 
   const args = getArguments();
-  console.log('Starting program with arguments', args);
+  console.log('Starting program with arguments', args.join(' '));
   proc = spawn(pathExecAbs, args);
   proc.stdout.on('data', (buf) => {
     // process.stdout.write(buf);
     const str = buf.toString();
     console.log(JSON.stringify({str}))
-    if (str.match(/\u001b\[[0-9]+m\n>/)) { // change color and prompt character
+    if (str.match(/\u001b\[3[0-9]m/)) { // detect change color
       console.log('native: ready');
       data.isReady = true;
       data.current = {};
       data.io.emit('update', { done: true });
     } else if (data.current.chatId) {
       data.current.output += str.replace(/\u001b\[[0-9]+m/g, ''); // terminal color
-      data.io.emit('update', data.current);
+      data.io.emit('update', {
+        chatId: data.current.chatId,
+        messageId: data.current.messageId,
+        output: data.current.output,
+      });
       // save to backend
       axios.post(`http://${data.backend}/api/messages`, {
         id: data.current.messageId,

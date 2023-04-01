@@ -55,6 +55,9 @@ const Dialog = {
     ];
     const CLASS_DISABLE = "md:w-1/2 border-2 border-gray-800 text-gray-400 rounded p-3 mr-1 cursor-pointer";
     const CLASS_ENABLE = "md:w-1/2 border-2 border-emerald-600 text-gray-200 rounded p-3 mr-1 cursor-pointer";
+    const handleSetContextMemory = (enabled) => () => {
+      setCfg(cfg => ({ ...cfg, '__context_memory': enabled ? '4' : '0' }));
+    };
 
     return (
       <Dialog.Wrapper
@@ -72,18 +75,25 @@ const Dialog = {
               value={cfg['__additional']}
               onChange={onChange('__additional')}
             />
-            {/* <div className="flex mt-5 items-stretch">
-              <div className={CLASS_ENABLE}>
+            {cfg['__context_memory'] !== '0' && (
+              <FormInput
+                label="# of message to memorize"
+                value={cfg['__context_memory']}
+                onChange={onChange('__context_memory')}
+              />
+            )}
+            <div className="flex mt-5 items-stretch">
+              <div className={cfg['__context_memory'] === '0' ? CLASS_ENABLE : CLASS_DISABLE} onClick={handleSetContextMemory(false)}>
                 <b>No context memory</b><br />
                 <small>The model doesn't care about previous messages</small>
                 <div className="h-full"></div>
               </div>
-              <div className={CLASS_DISABLE}>
+              <div className={cfg['__context_memory'] === '0' ? CLASS_DISABLE : CLASS_ENABLE} onClick={handleSetContextMemory(true)}>
                 <b>Context memory</b><br />
                 <small>The model remember last N messages. Only works with <b>llama.cpp</b></small>
                 <div className="h-full"></div>
               </div>
-            </div> */}
+            </div>
           </div>
         </>}
         footer={<>

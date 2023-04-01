@@ -3,6 +3,7 @@ import axios from "axios";
 import { uuidv4 } from "../utils/uuid";
 import { useAppContext } from "../utils/AppContext";
 import ErrorDisplay from "./ErrorDisplay";
+import { getConversationPrompt } from "../utils/conversation";
 
 function Chatbox({ chatRef }) {
   const {
@@ -17,6 +18,7 @@ function Chatbox({ chatRef }) {
     assistantTypingMsgId,
     setAssistantTypingMsgId,
     socket,
+    userConfig,
   } = useAppContext();
 
   const loading = !!assistantTypingMsgId;
@@ -60,6 +62,9 @@ function Chatbox({ chatRef }) {
           newMsgAssitant,
         ],
       };
+      const userPrompt = userConfig['__context_memory'] === '0'
+        ? userText
+        : getConversationPrompt(selectedChatData.messages, userText, userConfig['__context_memory']);
       setChats(chats => chats.map(c => c.id === newChat.id ? newChat : c));
       setAssistantTypingMsgId(newAssistantMsgId);
 
@@ -67,7 +72,7 @@ function Chatbox({ chatRef }) {
       const req = {
         chatId: selectedChat,
         messageId: newAssistantMsgId,
-        input: userText,
+        input: userPrompt,
       };
       socket.emit('ask', req);
       setUserText('');
@@ -176,6 +181,6 @@ function Chatbox({ chatRef }) {
 export default Chatbox;
 
 
-const StopIcon = () => <svg stroke="currentColor" fill="none" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" class="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+const StopIcon = () => <svg stroke="currentColor" fill="none" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
 
 const RefreshIcon = () => <svg stroke="currentColor" fill="none" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>

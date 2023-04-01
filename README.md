@@ -48,3 +48,4 @@ Then, open [http://localhost:13000/](http://localhost:13000/) on your browser
 - [x] Better guide / documentation
 - [x] Ability to stop / regenerate response
 - [x] Detect code response / use monospace font
+- [ ] [Configuration presets](https://www.reddit.com/r/LocalLLaMA/comments/1227uj5/my_experience_with_alpacacpp/)

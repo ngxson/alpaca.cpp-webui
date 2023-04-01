@@ -54,7 +54,7 @@ function Chats() {
   return (
     <div className="md:pl-[260px] h-screen p-0 m-0 overflow-x-hidden w-full dark:bg-gray-700">
       <div className="chat h-full w-full overflow-y-scroll m-0 p-0 flex">
-        {/* <div class="flex w-full items-center justify-center gap-1 border-b border-black/10 bg-gray-50 p-3 text-gray-500 dark:border-gray-900/50 dark:bg-gray-700 dark:text-gray-300">Model: Default (GPT-3.5)</div> */}
+        {/* <div className="flex w-full items-center justify-center gap-1 border-b border-black/10 bg-gray-50 p-3 text-gray-500 dark:border-gray-900/50 dark:bg-gray-700 dark:text-gray-300">Model: Default (GPT-3.5)</div> */}
 
         {selectedChat !== null &&
         chats[chats.findIndex((chat) => chat.id === selectedChat)] ? (
