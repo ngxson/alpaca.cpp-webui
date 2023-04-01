@@ -84,6 +84,12 @@ function Chatbox({ chatRef }) {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSubmit(event);
+      // reset height
+      const target = event.target;
+      setTimeout(() => {
+        target.style.height = "auto";
+        target.style.height = `${target.scrollHeight}px`;
+      }, 50);
     }
   }
 
