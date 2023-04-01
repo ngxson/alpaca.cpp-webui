@@ -1,18 +1,21 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useAppContext } from "../utils/AppContext";
 import { nl2br } from "../utils/nl2br";
 import Chatbox from "./Chatbox";
 
-function Chats({
-  userText,
-  setUserText,
-  setError,
-  chats,
-  setChats,
-  selectedChat,
-  setSelectedChat,
-  globalState,
-  setGlobalState,
-}) {
+function Chats() {
+  const {
+    userText,
+    setUserText,
+    setError,
+    chats,
+    setChats,
+    selectedChat,
+    setSelectedChat,
+    assistantTypingMsgId,
+    setAssistantTypingMsgId,
+  } = useAppContext();
+
   const chatRef = useRef(null);
   const [scrollHeight, setScrollHeight] = useState();
   const [prevMsgCount, setPrevMsgCount] = useState(-1);
@@ -71,7 +74,7 @@ function Chats({
                     <></>// <span className="font-semibold">ChatGPT: </span>
                   ) : null}
                   {nl2br(message.content)}
-                  {globalState.assistantTypingMsgId === message.id &&
+                  {assistantTypingMsgId === message.id &&
                     <span className="bot_cursor">{
                       !!(message.content || '').length ? <>&nbsp;&nbsp;</> : null
                     }▌</span>
@@ -123,18 +126,7 @@ function Chats({
           </h1>
         )}
 
-        <Chatbox
-          setError={setError}
-          userText={userText}
-          setUserText={setUserText}
-          chats={chats}
-          setChats={setChats}
-          selectedChat={selectedChat}
-          setSelectedChat={setSelectedChat}
-          globalState={globalState}
-          setGlobalState={setGlobalState}
-          chatRef={chatRef}
-        />
+        <Chatbox chatRef={chatRef} />
       </div>
     </div>
   );

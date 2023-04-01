@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { uuidv4 } from "../utils/uuid";
+import { useAppContext } from "../utils/AppContext";
+import ErrorDisplay from "./ErrorDisplay";
 
-function Chatbox({
-  setError,
-  userText,
-  setUserText,
-  chats,
-  setChats,
-  selectedChat,
-  setSelectedChat,
-  globalState,
-  setGlobalState,
-}) {
-  const loading = !!globalState.assistantTypingMsgId;
+function Chatbox({ chatRef }) {
+  const {
+    error,
+    setError,
+    userText,
+    setUserText,
+    chats,
+    setChats,
+    selectedChat,
+    setSelectedChat,
+    assistantTypingMsgId,
+    setAssistantTypingMsgId,
+  } = useAppContext();
+
+  const loading = !!assistantTypingMsgId;
 
   const handleChange = (event) => {
     setUserText(event.target.value);
+    setError(null);
   };
 
   const handleSubmit = async (event) => {
@@ -54,7 +60,7 @@ function Chatbox({
         ],
       };
       setChats(chats => chats.map(c => c.id === newChat.id ? newChat : c));
-      setGlobalState(state => ({...state, assistantTypingMsgId: newAssistantMsgId}));
+      setAssistantTypingMsgId(newAssistantMsgId);
 
       // send request to backend
       const req = {
@@ -97,9 +103,13 @@ function Chatbox({
         </button>
       </div>}
 
+      {error && <div className="flex flex-col flex-grow mx-auto mt-3 relative md:max-w-2xl lg:max-w-3xl lg:mx-auto">
+        <ErrorDisplay error={error} />
+      </div>}
+
       <form
         className="flex flex-col flex-grow mx-auto my-4 py-3 px-3 relative border border-black/10 bg-white 
-        dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md md:max-w-2xl lg:max-w-3xl md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-3xl"
+        dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md md:max-w-2xl lg:max-w-3xl md:mx-4 md:last:mb-6 lg:mx-auto"
         onSubmit={handleSubmit}
         style={{boxShadow:"0 0 20px 0 rgba(0, 0, 0, 0.1)"}}
       >

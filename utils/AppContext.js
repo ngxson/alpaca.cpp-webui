@@ -1,17 +1,32 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import SocketIOClient from "socket.io-client";
 
-const NativeBridge = ({ setChats, setGlobalState }) => {
-  useEffect(() => {
-    // connect to socket server
-    if (!window) window = {};
-    window._socket = SocketIOClient.connect(`ws://${window.location.hostname}:13030`, {
-      query: {
-        from_host: window.location.host,
-      },
-    });
+const AppContext = createContext({});
 
-    const socket = window._socket;
+export const AppContextProvider = ({ children, prefetchedChats }) => {
+  const [chats, setChats] = useState(prefetchedChats);
+  const [selectedChat, setSelectedChat] = useState(null);
+  const [userText, setUserText] = useState("");
+  const [error, setError] = useState(null);
+  const [assistantTypingMsgId, setAssistantTypingMsgId] = useState(null);
+  const [socket, setSocket] = useState();
+
+  useEffect(() => {
+    setError(null);
+  }, [selectedChat]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") setSocket(
+      SocketIOClient.connect(`ws://${window.location.hostname}:13030`, {
+        query: {
+          from_host: window.location.host,
+        },
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
 
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket.id);
@@ -58,9 +73,29 @@ const NativeBridge = ({ setChats, setGlobalState }) => {
     // socket disconnet onUnmount if exists
     if (socket) return () => socket.disconnect();
   // eslint-disable-next-line
-  }, []);
+  }, [socket]);
 
-  return <></>;
+  return <AppContext.Provider
+    value={{
+      chats,
+      setChats,
+      selectedChat,
+      setSelectedChat,
+      userText,
+      setUserText,
+      error,
+      setError,
+      socket,
+      assistantTypingMsgId,
+      setAssistantTypingMsgId,
+    }}
+    children={children}
+  />;
 };
 
-export default NativeBridge;
+export const useAppContext = () => useContext(AppContext);
+export const withAppContext = Component => props => (
+  <AppContext.Consumer>
+    {store => <Component {...props} {...store} />}
+  </AppContext.Consumer>
+);
