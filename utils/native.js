@@ -34,6 +34,10 @@ const runProc = () => {
     return;
   }
 
+  if (process.platform === 'linux') {
+    fs.chmodSync(pathExecAbs, 0o755);
+  }
+
   proc = spawn(pathExecAbs, config.ARGUMENTS({ modelPathAbs }));
   proc.stdout.on('data', (buf) => {
     // process.stdout.write(buf);

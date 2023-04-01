@@ -26,7 +26,9 @@ Pre-requirements:
 
 Alternatively, you can use `gpt4all`: Download `gpt4all-lora-quantized.bin` and `gpt4all-lora-quantized-*-x86` from [github.com/nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all), put them into `bin` folder
 
-**Step 3**: Run these commands
+**Step 3**: Edit `bin/config.js` so that the executable name and the model file name are correct
+
+**Step 4**: Run these commands
 
 ```
 npm i
