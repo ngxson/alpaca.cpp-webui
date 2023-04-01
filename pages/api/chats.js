@@ -36,6 +36,8 @@ export const getAllChats = async () => {
   });
 
   const allChats = Object.values(chats);
+  allChats.sort((a,b) => b.messages?.at(-1)?.createdAt - a.messages?.at(-1)?.createdAt);
+
   return allChats;
 };
 

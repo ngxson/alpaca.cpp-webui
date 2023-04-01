@@ -44,6 +44,6 @@ Then, open [http://localhost:13000/](http://localhost:13000/) on your browser
 - [x] Save chat history to disk
 - [ ] Implement context memory
 - [x] Conversation history
-- [ ] Interface for tweaking parameters
+- [x] Interface for tweaking parameters
 - [x] Better guide / documentation
 - [x] Ability to stop / regenerate response

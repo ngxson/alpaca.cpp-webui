@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useAppContext } from "../utils/AppContext";
+import Dialog from "./Dialog";
 
 const IconEdit = ({ className, onClick }) => <svg onClick={onClick} stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className={"h-4 w-4 " + className} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
 
@@ -19,6 +20,8 @@ function ChatHistory() {
     selectedChat,
     setSelectedChat,
   } = useAppContext();
+
+  const [showSettings, setShowSettings] = useState(false);
 
   const fetchChats = async () => {
     try {
@@ -155,19 +158,21 @@ function ChatHistory() {
                 <IconDelete />
                 Clear conversations
               </button>
-              {/* <button
+              <button
                 className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm"
                 onClick={() => {
-                  // TODO
+                  setShowSettings(true);
                 }}
               >
                 <IconUser />
                 Settings
-              </button> */}
+              </button>
             </>}
           </nav>
         </div>
       </div>
+
+      {showSettings && <Dialog.Settings setShowSettings={setShowSettings} />}
     </div>
   );
 }

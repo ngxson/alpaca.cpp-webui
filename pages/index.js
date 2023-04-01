@@ -4,10 +4,9 @@ import { Inter } from "@next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import ChatHistory from "../components/ChatHistory";
 import Chats from "../components/Chats";
-import ErrorDisplay from "../components/ErrorDisplay";
 import { getAllChats } from "./api/chats";
 import { AppContextProvider, useAppContext } from "../utils/AppContext";
-import DialogGuide from "../components/DialogGuide";
+import Dialog from "../components/Dialog";
 
 export default function Home({ prefetchedChats }) {
   return (
@@ -30,8 +29,8 @@ const Main = () => {
 
   return (
     <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
-      {error?.type === 'ERR_NO_MODEL' && <DialogGuide.DownloadModelAndBinary error={error} />}
-      {error?.type === 'ERR_WS' && <DialogGuide.ErrorCannotConnectWS />}
+      {error?.type === 'ERR_NO_MODEL' && <Dialog.DownloadModelAndBinary error={error} />}
+      {error?.type === 'ERR_WS' && <Dialog.ErrorCannotConnectWS />}
 
       <div className="w-screen h-screen mx-auto overflow-hidden bg-white p-0">
         <div className="flex overflow-x-hidden items-bottom">

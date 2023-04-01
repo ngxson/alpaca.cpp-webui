@@ -9,7 +9,43 @@ const { Server: ServerIO } = require("socket.io");
 const { spawn } = require('node:child_process');
 const pathExecAbs = path.join(__dirname, '../bin', config.EXECUTABLE_FILE);
 const modelPathAbs = path.join(__dirname, '../bin', config.MODEL_FILE);
+const userConfigPathAbs = path.join(__dirname, '../bin/config.user.json');
+
+const getUserConfig = () => fs.existsSync(userConfigPathAbs)
+  ? JSON.parse(fs.readFileSync(userConfigPathAbs).toString())
+  : {};
 let proc;
+
+// arguments suggested by @AIbottesting
+// https://github.com/antimatter15/alpaca.cpp/issues/171
+const DEFAULT_ARGUMENTS = {
+  'threads': '4',
+  'seed': '42',
+  'top_p': '2',
+  'top_k': '160',
+  'n_predict': '200',
+  'temp': '0.50',
+  'repeat_penalty': '1.1',
+  'ctx_size': '5121',
+  'repeat_last_n': '128',
+  '__additional': '--interactive-start',
+};
+
+const getArguments = () => {
+  const userConfig = getUserConfig();
+  const mergedConfig = {...DEFAULT_ARGUMENTS, ...userConfig};
+  const additionalArgs = mergedConfig['__additional'];
+  delete mergedConfig['__additional'];
+  const args = [];
+  for (const opt in mergedConfig) {
+    args.push(`--${opt}`);
+    args.push(mergedConfig[opt]);
+  }
+  additionalArgs.split(' ').forEach(opt => args.push(opt));
+  args.push('--model');
+  args.push(modelPathAbs);
+  return args;
+};
 
 const app = express();
 app.get('/', (req, res) => res.send(''));
@@ -38,7 +74,9 @@ const runProc = () => {
     fs.chmodSync(pathExecAbs, 0o755);
   }
 
-  proc = spawn(pathExecAbs, config.ARGUMENTS({ modelPathAbs }));
+  const args = getArguments();
+  console.log('Starting program with arguments', args);
+  proc = spawn(pathExecAbs, args);
   proc.stdout.on('data', (buf) => {
     // process.stdout.write(buf);
     const str = buf.toString();
@@ -109,9 +147,16 @@ data.io.on('connection', (socket) => {
     socket.emit('error_missing_file', { pathExecAbs, modelPathAbs });
   }
 
+  socket.emit('user_config', {...DEFAULT_ARGUMENTS, ...getUserConfig()});
+
   socket.on('ask', ({ chatId, messageId, input }) => {
     console.log('user input: ', { chatId, messageId, input });
     ask({ chatId, messageId, input });
+  });
+
+  socket.on('save_user_config', (userConfig) => {
+    fs.writeFileSync(userConfigPathAbs, JSON.stringify(userConfig, null, 2));
+    socket.emit('user_config', {...DEFAULT_ARGUMENTS, ...userConfig});
   });
 
   socket.on('action_stop', () => {

@@ -10,6 +10,7 @@ export const AppContextProvider = ({ children, prefetchedChats }) => {
   const [error, setError] = useState(null);
   const [assistantTypingMsgId, setAssistantTypingMsgId] = useState(null);
   const [socket, setSocket] = useState();
+  const [userConfig, setUserConfig] = useState({});
 
   useEffect(() => {
     setError(null);
@@ -40,6 +41,8 @@ export const AppContextProvider = ({ children, prefetchedChats }) => {
       pathExecAbs,
       modelPathAbs,
     }));
+
+    socket.on("user_config", (cfg) => setUserConfig(cfg));
 
     socket.on("update", (data) => {
       console.log('update', data)
@@ -96,6 +99,7 @@ export const AppContextProvider = ({ children, prefetchedChats }) => {
       socket,
       assistantTypingMsgId,
       setAssistantTypingMsgId,
+      userConfig,
     }}
     children={children}
   />;
