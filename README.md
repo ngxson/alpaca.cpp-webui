@@ -16,26 +16,27 @@ Pre-requirements:
 - You have nodejs v18+ installed on your machine
 - You are using Linux (Windows should also work, but I have not tested yet)
 
-**Step 1**: Clone this repository to your local machine
+🔶 **Step 1**: Clone this repository to your local machine
 
-**Step 2**: Download the model and binary file to run the model. You have some options:
+🔶 **Step 2**: Download the model and binary file to run the model. You have some options:
 
-(Recommended) `Alpaca.cpp` and `Alpaca-native-4bit-ggml` model => This combination give me very convincing responses most of the time
-- Download `chat` binary file and place it under `bin` folder: https://github.com/antimatter15/alpaca.cpp/releases
-- Download `ggml-alpaca-7b-q4.bin` and place it under `bin` folder: https://huggingface.co/Sosaka/Alpaca-native-4bit-ggml/blob/main/ggml-alpaca-7b-q4.bin
+- 👉 (Recommended) `Alpaca.cpp` and `Alpaca-native-4bit-ggml` model => This combination give me very convincing responses most of the time
+  - Download `chat` binary file and place it under `bin` folder: https://github.com/antimatter15/alpaca.cpp/releases
+  - Download `ggml-alpaca-7b-q4.bin` and place it under `bin` folder: https://huggingface.co/Sosaka/Alpaca-native-4bit-ggml/blob/main/ggml-alpaca-7b-q4.bin
 
-Alternatively, you can use `gpt4all`: Download `gpt4all-lora-quantized.bin` and `gpt4all-lora-quantized-*-x86` from [github.com/nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all), put them into `bin` folder
+- 👉 Alternatively, you can use `gpt4all`: Download `gpt4all-lora-quantized.bin` and `gpt4all-lora-quantized-*-x86` from [github.com/nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all), put them into `bin` folder
 
-**Step 3**: Edit `bin/config.js` so that the executable name and the model file name are correct
+🔶 **Step 3**: Edit `bin/config.js` so that the executable name and the model file name are correct  
+(If you are using `chat` and `ggml-alpaca-7b-q4.bin`, you don't need to modify anything)
 
-**Step 4**: Run these commands
+🔶 **Step 4**: Run these commands
 
 ```
 npm i
 npm start
 ```
 
-Then, open `http://localhost:13000/` on your browser
+Then, open [http://localhost:13000/](http://localhost:13000/) on your browser
 
 ## TODO
 
