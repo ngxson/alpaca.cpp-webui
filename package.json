@@ -25,6 +25,7 @@
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
     "sqlite3": "^5.1.6",
+    "underscore": "^1.13.6",
     "uuid": "^9.0.0",
     "uuidv4": "^6.2.13"
   },

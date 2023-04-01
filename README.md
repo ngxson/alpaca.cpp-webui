@@ -47,3 +47,4 @@ Then, open [http://localhost:13000/](http://localhost:13000/) on your browser
 - [x] Interface for tweaking parameters
 - [x] Better guide / documentation
 - [x] Ability to stop / regenerate response
+- [x] Detect code response / use monospace font

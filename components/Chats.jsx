@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useAppContext } from "../utils/AppContext";
 import { nl2br } from "../utils/nl2br";
 import Chatbox from "./Chatbox";
+import detectLang from "../utils/lang-detector";
 
 function Chats() {
   const {
@@ -27,6 +28,14 @@ function Chats() {
       });
     }
   }, []);
+
+  const msgContainsCode = useMemo(() => {
+    const chat = chats.find(c => c.id === selectedChat);
+    if (!chat) return {};
+    const res = {};
+    chat.messages.forEach(m => res[m.id] = delectIsCode(m.content));
+    return res;
+  }, [chats, selectedChat]);
 
   useEffect(() => {
     scrollToBottom();
@@ -73,7 +82,10 @@ function Chats() {
                   {message.role === "assistant" ? (
                     <></>// <span className="font-semibold">ChatGPT: </span>
                   ) : null}
-                  {nl2br(message.content)}
+                  {msgContainsCode[message.id]
+                    ? <span className="font-mono">{nl2br(message.content)}</span>
+                    : nl2br(message.content)
+                  }
                   {assistantTypingMsgId === message.id &&
                     <span className="bot_cursor">{
                       !!(message.content || '').length ? <>&nbsp;&nbsp;</> : null
@@ -128,5 +140,18 @@ function Chats() {
     </div>
   );
 }
+
+const CACHE_DETECT_CODE = {}
+const delectIsCode = (text) => {
+  if (text.length < 10) return false;
+  const _txt = text.substr(0, 80);
+  if (CACHE_DETECT_CODE[_txt] !== undefined) {
+    return CACHE_DETECT_CODE[_txt];
+  } else {
+    const res = detectLang(_txt);
+    const isCode = res.language !== 'Unknown' && res.points >= 2;
+    CACHE_DETECT_CODE[_txt] = isCode;
+  }
+};
 
 export default Chats;
