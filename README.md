@@ -10,13 +10,11 @@ Screenshot:
 
 ![](./doc/screenshot_0.png)
 
-⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
-
-**This project is in very early development stage. BUGs are expected**
-
-⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
-
 ## How to use
+
+Pre-requirements:
+- You have nodejs v18+ installed on your machine
+- You are using Linux (Windows should also work, but I have not tested yet)
 
 **Step 1**: Clone this repository to your local machine
 

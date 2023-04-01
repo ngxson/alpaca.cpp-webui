@@ -30,19 +30,27 @@ export const AppContextProvider = ({ children, prefetchedChats }) => {
 
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket.id);
-      //setConnected(true);
+      setError(null);
     });
+
+    socket.on("connect_error", () => setError({ type: 'ERR_WS' }));
+    socket.on("disconnect", () => setError({ type: 'ERR_WS' }));
+    socket.on("error_missing_file", ({ pathExecAbs, modelPathAbs }) => setError({
+      type: 'ERR_NO_MODEL',
+      pathExecAbs,
+      modelPathAbs,
+    }));
 
     socket.on("update", (data) => {
       console.log('update', data)
 
       if (data.done) {
-        setGlobalState(state => ({...state, assistantTypingMsgId: null}));
+        setAssistantTypingMsgId(null);
         return;
       }
 
       const { chatId, messageId, input, output } = data;
-      setGlobalState(state => ({...state, assistantTypingMsgId: messageId}));
+      setAssistantTypingMsgId(messageId);
       setChats(chats => {
         return chats.map(c => {
           if (c.id === chatId) {

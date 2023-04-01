@@ -119,10 +119,7 @@ function Chats() {
           </div>
         ) : (
           <h1 className="text-4xl font-semibold text-center text-gray-300 dark:text-gray-600 ml-auto mr-auto mb-10 sm:mb-16 flex gap-2 items-center justify-center flex-grow">
-            Alpaca.cpp
-            {/* <span className="bg-yellow-200 text-yellow-900 py-0.5 px-1.5 text-xs md:text-sm rounded-md uppercase">
-              Clone
-            </span> */}
+              Alpaca.cpp
           </h1>
         )}
 

@@ -7,6 +7,7 @@ import Chats from "../components/Chats";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { getAllChats } from "./api/chats";
 import { AppContextProvider, useAppContext } from "../utils/AppContext";
+import DialogGuide from "../components/DialogGuide";
 
 export default function Home({ prefetchedChats }) {
   return (
@@ -25,8 +26,13 @@ export default function Home({ prefetchedChats }) {
 }
 
 const Main = () => {
+  const { error } = useAppContext();
+
   return (
     <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
+      {error?.type === 'ERR_NO_MODEL' && <DialogGuide.DownloadModelAndBinary error={error} />}
+      {error?.type === 'ERR_WS' && <DialogGuide.ErrorCannotConnectWS />}
+
       <div className="w-screen h-screen mx-auto overflow-hidden bg-white p-0">
         <div className="flex overflow-x-hidden items-bottom">
           <ChatHistory />

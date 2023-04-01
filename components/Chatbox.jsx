@@ -16,6 +16,7 @@ function Chatbox({ chatRef }) {
     setSelectedChat,
     assistantTypingMsgId,
     setAssistantTypingMsgId,
+    socket,
   } = useAppContext();
 
   const loading = !!assistantTypingMsgId;
@@ -68,7 +69,7 @@ function Chatbox({ chatRef }) {
         messageId: newAssistantMsgId,
         input: userText,
       };
-      window._socket.emit('ask', req);
+      socket.emit('ask', req);
       setUserText('');
 
       // save to backend
@@ -94,7 +95,7 @@ function Chatbox({ chatRef }) {
     >
       {loading && <div className="flex ml-1 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center pt-2">
         <button className="btn relative btn-neutral border border-gray-500 py-1 px-4 rounded" onClick={() => {
-          window._socket.emit('action_stop', {});
+          socket.emit('action_stop', {});
         }}>
           <div className="flex w-full items-center justify-center gap-2">
             <StopIcon />
