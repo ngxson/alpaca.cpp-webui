@@ -87,7 +87,13 @@ const ask = async ({ chatId, messageId, input }) => {
     output: '',
   };
   console.log('native: ask', data.current);
-  proc.stdin.write(input + '\n');
+  proc.stdin.write(
+    input
+      .trim()
+      .replace(/\r/g, '')        // windows CR
+      .replace(/\n/g, '\\\n')    // escape LF
+    + '\n'
+  );
 };
 
 
