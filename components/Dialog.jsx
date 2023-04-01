@@ -90,7 +90,7 @@ const Dialog = {
               </div>
               <div className={cfg['__context_memory'] === '0' ? CLASS_DISABLE : CLASS_ENABLE} onClick={handleSetContextMemory(true)}>
                 <b>Context memory</b><br />
-                <small>The model remember last N messages. Only works with <b>llama.cpp</b></small>
+                <small>The model remember last N messages. Reponse time will be much slower.</small>
                 <div className="h-full"></div>
               </div>
             </div>

@@ -84,7 +84,8 @@ const runProc = () => {
     // process.stdout.write(buf);
     const str = buf.toString();
     console.log(JSON.stringify({str}))
-    if (str.match(/\u001b\[3[0-9]m/)) { // detect change color
+    //if (str.match(/\u001b\[3[0-9]m[> \n]{0,3}$/)) { // detect change color
+    if (str.match(/\u001b\[[0-9]+m\n> /)) { // detect change color
       console.log('native: ready');
       data.isReady = true;
       data.current = {};

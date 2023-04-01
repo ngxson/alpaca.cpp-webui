@@ -47,6 +47,7 @@ function Chatbox({ chatRef }) {
         content: userText,
         createdAt: Date.now(),
       }
+      await axios.post('/api/messages', newMsgUser).catch(console.error);
       const newMsgAssitant = {
         id: newAssistantMsgId,
         chat_id: selectedChat,
@@ -78,7 +79,6 @@ function Chatbox({ chatRef }) {
       setUserText('');
 
       // save to backend
-      await axios.post('/api/messages', newMsgUser).catch(console.error);
       await axios.post('/api/messages', newMsgAssitant).catch(console.error);
     } else {
       setError("Please enter a valid prompt");
@@ -122,7 +122,7 @@ function Chatbox({ chatRef }) {
       <form
         className="flex flex-col flex-grow mx-auto my-4 py-3 px-3 relative border border-black/10 bg-white 
         dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md md:max-w-2xl lg:max-w-3xl md:mx-4 md:last:mb-6 lg:mx-auto"
-        onSubmit={handleSubmit}
+        onSubmit={e => e.preventDefault()}
         style={{boxShadow:"0 0 20px 0 rgba(0, 0, 0, 0.1)"}}
       >
         <div className="w-full p-0 m-0">
@@ -151,9 +151,10 @@ function Chatbox({ chatRef }) {
         </div>
 
         <button
-          type="submit"
+          type="button"
           className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
           disabled={loading}
+          onClick={handleSubmit}
         >
           {!loading && (
             <svg
