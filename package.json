@@ -27,9 +27,7 @@
     "sqlite3": "^5.1.6",
     "underscore": "^1.13.6",
     "uuid": "^9.0.0",
-    "uuidv4": "^6.2.13"
-  },
-  "devDependencies": {
+    "uuidv4": "^6.2.13",
     "autoprefixer": "^10.4.13",
     "concurrently": "^8.0.1",
     "postcss": "^8.4.21",

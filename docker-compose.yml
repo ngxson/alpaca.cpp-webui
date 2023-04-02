@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  alpaca_webui:
+    build: .
+    container_name: alpaca_webui
+    hostname: alpaca_webui
+    ports:
+      - 13000:13000
+    volumes:
+      - ./.data:/app/.data
+      - ./bin:/app/bin

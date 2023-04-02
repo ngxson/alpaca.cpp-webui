@@ -31,7 +31,7 @@ Screenshot:
 ## How to use
 
 Pre-requirements:
-- You have nodejs v18+ installed on your machine
+- You have nodejs v18+ installed on your machine (or if you have Docker, you don't need to install nodejs)
 - You are using Linux (Windows should also work, but I have not tested yet)
 
 🔶 **Step 1**: Clone this repository to your local machine
@@ -54,11 +54,13 @@ npm i
 npm start
 ```
 
+Alternatively, you can just use `docker compose up` if you have Docker installed.
+
 Then, open [http://localhost:13000/](http://localhost:13000/) on your browser
 
 ## TODO
 
 - [ ] Test on Windows
 - [x] Proxy ws via nextjs
-- [ ] Add Dockerfile
+- [x] Add Dockerfile / docker-compose
 - [ ] UI: add avatar
