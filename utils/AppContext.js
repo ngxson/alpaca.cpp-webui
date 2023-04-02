@@ -11,6 +11,7 @@ export const AppContextProvider = ({ children, prefetchedChats, wsPort }) => {
   const [assistantTypingMsgId, setAssistantTypingMsgId] = useState(null);
   const [socket, setSocket] = useState();
   const [userConfig, setUserConfig] = useState({});
+  const [showMenu, setShowMenu] = useState(true);
 
   useEffect(() => {
     setError(null);
@@ -101,6 +102,8 @@ export const AppContextProvider = ({ children, prefetchedChats, wsPort }) => {
       assistantTypingMsgId,
       setAssistantTypingMsgId,
       userConfig,
+      showMenu,
+      setShowMenu,
     }}
     children={children}
   />;

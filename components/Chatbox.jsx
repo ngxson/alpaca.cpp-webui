@@ -101,7 +101,7 @@ function Chatbox({ chatRef }) {
   return (
     // <div className="h-15% absolute bottom-0 w-4/6  border-t md:border-t-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:bg-vert-light-gradient bg-white fade">
     <div
-      className="pl-[260px] absolute bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent 
+      className="md:pl-[260px] absolute bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent 
       md:dark:border-transparent dark:bg-gray-800"
     >
       {loading && <div className="flex ml-1 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center pt-2">

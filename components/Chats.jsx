@@ -66,7 +66,7 @@ function Chats() {
               setScrollHeight(chatRef.current.scrollTop);
             }}
           >
-            <div className="h-10 w-full"></div>
+              <div className="h-16 md:h-10 w-full"></div>
             
             {chats[
               chats.findIndex((chat) => chat.id === selectedChat)
@@ -74,7 +74,7 @@ function Chats() {
               message.role === "system" ? null : (
                 <p
                   key={index}
-                  className={`py-6 px-24 text-xxl${
+                  className={`py-6 px-6 md:px-24 text-xxl${
                     message.role === "user" ? " bg-transparent" : " bg-white bg-opacity-5"
                   } break-words`}
                   style={{ whiteSpace: 'pre-wrap' }}

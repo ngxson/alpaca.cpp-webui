@@ -19,6 +19,8 @@ function ChatHistory() {
     setChats,
     selectedChat,
     setSelectedChat,
+    showMenu,
+    setShowMenu,
   } = useAppContext();
 
   const [showSettings, setShowSettings] = useState(false);
@@ -70,8 +72,8 @@ function ChatHistory() {
     }
   };
 
-  return (
-    <div className="hidden md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col bg-gray-1000 dark z-50">
+  return <>
+    <div className={"md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col bg-gray-1000 dark z-50 " + (showMenu ? "fixed w-full h-full" : "hidden")}>
       <div className="flex h-full min-h-0 flex-col">
         <div className="scrollbar-trigger flex h-full w-full flex-1 items-start border-white/20">
           <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
@@ -82,6 +84,7 @@ function ChatHistory() {
                   setUserText("");
                 }
                 createChat();
+                setShowMenu(false);
               }}
             >
               <svg
@@ -116,6 +119,7 @@ function ChatHistory() {
                         setUserText("");
                       }
                       setSelectedChat(chat.id);
+                      setShowMenu(false);
                     }}
                   >
                     <svg
@@ -158,23 +162,33 @@ function ChatHistory() {
                 <IconDelete />
                 Clear conversations
               </button>
-              <button
-                className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm"
-                onClick={() => {
-                  setShowSettings(true);
-                }}
-              >
-                <IconUser />
-                Settings
-              </button>
             </>}
+            <button
+              className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm"
+              onClick={() => {
+                setShowSettings(true);
+              }}
+            >
+              <IconUser />
+              Settings
+            </button>
           </nav>
         </div>
       </div>
 
       {showSettings && <Dialog.Settings setShowSettings={setShowSettings} />}
     </div>
-  );
+
+    {/* Mobile top bar */}
+    {!showMenu && <div className="fixed md:hidden top-0 left-0 w-full z-50 h-12
+      border-b border-b-1 border-white/20 bg-gray-800
+      flex flex-row items-center">
+      <MenuBurgerIcon className="m-4 cursor-pointer" onClick={() => setShowMenu(true)} />
+      {selectedChat && chats.find(c => c.id === selectedChat)?.title}
+    </div>}
+  </>;
 }
+
+const MenuBurgerIcon = ({ className, onClick }) => <svg onClick={onClick} stroke="currentColor" fill="none" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className={"h-6 w-6 " + className} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
 
 export default ChatHistory;

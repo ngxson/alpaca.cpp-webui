@@ -17,6 +17,7 @@ Thanks to:
 - [x] Better guide / documentation
 - [x] Ability to stop / regenerate response
 - [x] Detect code response / use monospace font
+- [x] Responsive UI
 - [ ] [Configuration presets](https://www.reddit.com/r/LocalLLaMA/comments/1227uj5/my_experience_with_alpacacpp/)
 
 Screenshot:
