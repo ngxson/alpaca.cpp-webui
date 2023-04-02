@@ -82,10 +82,18 @@ const Dialog = {
                 onChange={onChange('__context_memory')}
               />
             )}
+            {cfg['__context_memory'] !== '0' && (
+              <FormInput
+                label="prompt template"
+                value={cfg['__context_memory_prompt']}
+                onChange={onChange('__context_memory_prompt')}
+                type="textarea"
+              />
+            )}
             <div className="flex mt-5 items-stretch">
               <div className={cfg['__context_memory'] === '0' ? CLASS_ENABLE : CLASS_DISABLE} onClick={handleSetContextMemory(false)}>
                 <b>No context memory</b><br />
-                <small>The model doesn't care about previous messages</small>
+                <small>The model doesn&apos;t care about previous messages</small>
                 <div className="h-full"></div>
               </div>
               <div className={cfg['__context_memory'] === '0' ? CLASS_DISABLE : CLASS_ENABLE} onClick={handleSetContextMemory(true)}>
@@ -159,7 +167,7 @@ const Dialog = {
   },
 };
 
-const FormInput = ({ label, value, onChange }) => {
+const FormInput = ({ label, value, onChange, type = 'input' }) => {
   return <>
     <div className="md:flex md:items-center mb-1">
       <div className="md:w-1/3">
@@ -168,7 +176,12 @@ const FormInput = ({ label, value, onChange }) => {
         </label>
       </div>
       <div className="md:w-2/3">
-        <input className="bg-gray-700 appearance-none border-2 border-gray-800 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:border-emerald-600" id={label} type="text" value={value} onChange={onChange} />
+        {type === 'input' && <input className="bg-gray-700 appearance-none border-2 border-gray-800 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:border-emerald-600" id={label} type="text" value={value} onChange={onChange} />}
+        {type === 'textarea' && <textarea
+          className="bg-gray-700 appearance-none border-2 border-gray-800 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:border-emerald-600"
+          id={label} value={value} onChange={onChange}
+          style={{ height: '4em' }}
+        />}
       </div>
     </div>
   </>

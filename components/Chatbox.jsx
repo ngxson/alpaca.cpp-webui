@@ -65,7 +65,7 @@ function Chatbox({ chatRef }) {
       };
       const userPrompt = userConfig['__context_memory'] === '0'
         ? userText
-        : getConversationPrompt(selectedChatData.messages, userText, userConfig['__context_memory']);
+        : getConversationPrompt(selectedChatData.messages, userText, userConfig['__context_memory'], userConfig['__context_memory_prompt']);
       setChats(chats => chats.map(c => c.id === newChat.id ? newChat : c));
       setAssistantTypingMsgId(newAssistantMsgId);
 

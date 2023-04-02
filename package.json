@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run proc_dev\" \"npm run proc_native\"",
+    "dev": "PORT=3001 WS_PORT=13001 concurrently --kill-others \"npm run proc_dev\" \"npm run proc_native\"",
     "proc_dev": "next dev",
-    "proc_serve": "PORT=13000 next start",
+    "proc_serve": "next start",
     "proc_native": "node ./utils/native.js",
     "build": "next build",
-    "start": "next build && concurrently --kill-others \"npm run proc_serve\" \"npm run proc_native\"",
+    "start": "next build && PORT=13000 WS_PORT=13001 concurrently --kill-others \"npm run proc_serve\" \"npm run proc_native\"",
     "lint": "next lint"
   },
   "dependencies": {

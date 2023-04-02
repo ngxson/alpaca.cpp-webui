@@ -1,14 +1,32 @@
 # Alpaca.cpp Web UI (Next.js)
 
+This is a web UI wrapper for alpaca.cpp
+
 Thanks to:
 - [github.com/AidanGuarniere/chatGPT-UI-template](https://github.com/AidanGuarniere/chatGPT-UI-template)
 - [github.com/antimatter15/alpaca.cpp](https://github.com/antimatter15/alpaca.cpp) and [github.com/ggerganov/llama.cpp](https://github.com/ggerganov/llama.cpp)
 - [github.com/nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all)
 - [Suggestion for parameters](https://github.com/antimatter15/alpaca.cpp/issues/171)
 
+## Features
+
+- [x] Save chat history to disk
+- [x] Implement context memory
+- [x] Conversation history
+- [x] Interface for tweaking parameters
+- [x] Better guide / documentation
+- [x] Ability to stop / regenerate response
+- [x] Detect code response / use monospace font
+- [ ] [Configuration presets](https://www.reddit.com/r/LocalLLaMA/comments/1227uj5/my_experience_with_alpacacpp/)
+
 Screenshot:
 
 ![](./doc/screenshot_0.png)
+
+<p>
+  <img src="https://raw.githubusercontent.com/ngxson/alpaca.cpp-webui/master/doc/screenshot_1.png" width="49%">
+  <img src="https://raw.githubusercontent.com/ngxson/alpaca.cpp-webui/master/doc/screenshot_2.png" width="49%">
+</p>
 
 ## How to use
 
@@ -40,12 +58,7 @@ Then, open [http://localhost:13000/](http://localhost:13000/) on your browser
 
 ## TODO
 
-- [ ] Support Windows
-- [x] Save chat history to disk
-- [ ] Implement context memory
-- [x] Conversation history
-- [x] Interface for tweaking parameters
-- [x] Better guide / documentation
-- [x] Ability to stop / regenerate response
-- [x] Detect code response / use monospace font
-- [ ] [Configuration presets](https://www.reddit.com/r/LocalLLaMA/comments/1227uj5/my_experience_with_alpacacpp/)
+- [ ] Test on Windows
+- [x] Proxy ws via nextjs
+- [ ] Add Dockerfile
+- [ ] UI: add avatar

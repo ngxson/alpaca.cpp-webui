@@ -3,7 +3,7 @@ import SocketIOClient from "socket.io-client";
 
 const AppContext = createContext({});
 
-export const AppContextProvider = ({ children, prefetchedChats }) => {
+export const AppContextProvider = ({ children, prefetchedChats, wsPort }) => {
   const [chats, setChats] = useState(prefetchedChats);
   const [selectedChat, setSelectedChat] = useState(null);
   const [userText, setUserText] = useState("");
@@ -17,13 +17,14 @@ export const AppContextProvider = ({ children, prefetchedChats }) => {
   }, [selectedChat]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") setSocket(
-      SocketIOClient.connect(`ws://${window.location.hostname}:13030`, {
-        query: {
-          from_host: window.location.host,
-        },
-      })
-    );
+    if (typeof window !== "undefined") {
+      const protocol = window.location.protocol.match(/https/) ? 'wss' : 'ws';
+      setSocket(
+        SocketIOClient.connect(`${protocol}://${location.host}`, {
+          path: '/api/socketio'
+        })
+      );
+    }
   }, []);
 
   useEffect(() => {

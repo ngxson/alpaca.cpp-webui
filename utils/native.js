@@ -30,6 +30,7 @@ const DEFAULT_ARGUMENTS = {
   'repeat_last_n': '128',
   '__additional': '--interactive-start',
   '__context_memory': '0',
+  '__context_memory_prompt': 'The following is a friendly conversation between human and AI called Alpaca. AI is talkative and provides details from its context.',
 };
 
 const getArguments = () => {
@@ -54,7 +55,7 @@ const app = express();
 app.get('/', (req, res) => res.send(''));
 const server = http.createServer(app);
 let data = {
-  backend: 'localhost:3000',
+  backend: `http://127.0.0.1:${process.env.PORT}`,
   isReady: false,
   current: {},
   io: new ServerIO(server, {
@@ -98,7 +99,7 @@ const runProc = () => {
         output: data.current.output,
       });
       // save to backend
-      axios.post(`http://${data.backend}/api/messages`, {
+      axios.post(`${data.backend}/api/messages`, {
         id: data.current.messageId,
         chat_id: data.current.chatId,
         role: 'assistant',
@@ -146,10 +147,7 @@ const ask = async ({ chatId, messageId, input }) => {
 
 /////////////////////////
 data.io.on('connection', (socket) => {
-  const fromHost = (socket.handshake.query || {}).from_host || 'localhost:3000';
-  data.backend = fromHost;
-
-  console.log('New connection from', fromHost);
+  console.log('New connection');
   
   if (data.isErrorFileMissing) {
     socket.emit('error_missing_file', { pathExecAbs, modelPathAbs });
@@ -177,7 +175,7 @@ data.io.on('connection', (socket) => {
   });
 });
 
-server.listen(13030, () => {
-  console.log('native bridge listening on *:13030');
+server.listen(process.env.WS_PORT, () => {
+  console.log(`native bridge listening on *:${process.env.WS_PORT}`);
 });
 
