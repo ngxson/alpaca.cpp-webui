@@ -35,6 +35,8 @@ Pre-requirements:
 - You have nodejs v18+ installed on your machine (or if you have Docker, you don't need to install nodejs)
 - You are using Linux (Windows should also work, but I have not tested yet)
 
+**For Windows user**, these is a detailed guide here: [doc/windows.md](./doc/windows.md)
+
 🔶 **Step 1**: Clone this repository to your local machine
 
 🔶 **Step 2**: Download the model and binary file to run the model. You have some options:
@@ -61,7 +63,7 @@ Then, open [http://localhost:13000/](http://localhost:13000/) on your browser
 
 ## TODO
 
-- [ ] Test on Windows
+- [x] Test on Windows
 - [x] Proxy ws via nextjs
 - [x] Add Dockerfile / docker-compose
 - [ ] UI: add avatar

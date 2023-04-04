@@ -56,6 +56,7 @@ app.get('/', (req, res) => res.send(''));
 const server = http.createServer(app);
 let data = {
   backend: `http://127.0.0.1:${process.env.PORT}`,
+  isLoaded: false,
   isReady: false,
   current: {},
   io: new ServerIO(server, {
@@ -82,12 +83,16 @@ const runProc = () => {
   console.log('Starting program with arguments', args.join(' '));
   proc = spawn(pathExecAbs, args);
   proc.stdout.on('data', (buf) => {
-    // process.stdout.write(buf);
+    if (!data.isLoaded) {
+      process.stdout.write(buf);
+    }
+
     const str = buf.toString();
     console.log(JSON.stringify({str}))
     //if (str.match(/\u001b\[3[0-9]m[> \n]{0,3}$/)) { // detect change color
     if (str.match(/\u001b\[[0-9]+m\n> /)) { // detect change color
       console.log('native: ready');
+      data.isLoaded = true;
       data.isReady = true;
       data.current = {};
       data.io.emit('update', { done: true });
