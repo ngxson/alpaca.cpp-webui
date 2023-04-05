@@ -15,9 +15,12 @@ const Dialog = {
             Please follow this guide to download the model:<br />
             <a className="underline" href="https://github.com/ngxson/alpaca.cpp-webui#how-to-use">https://github.com/ngxson/alpaca.cpp-webui#how-to-use</a><br />
             <br />
-            Then, make sure that these paths exist:<br />
-            <span className="font-mono">{pathExecAbs}</span><br />
-            <span className="font-mono">{modelPathAbs}</span><br />
+            {!pathExecAbs.startsWith('/app/bin') && <>
+              {/* only show this part outside docker container */}
+              Then, make sure that these paths exist:<br />
+              <span className="font-mono">{pathExecAbs}</span><br />
+              <span className="font-mono">{modelPathAbs}</span><br />
+            </>}
           </p>
         </>}
       />
@@ -75,6 +78,13 @@ const Dialog = {
               value={cfg['__additional']}
               onChange={onChange('__additional')}
             />
+            {/* <FormInput
+              label="initial prompt"
+              value={cfg['prompt']}
+              onChange={onChange('prompt')}
+              placeholder="(Default) Below is an instruction that describes a task. Write a response that appropriately completes the request."
+              type="textarea"
+            /> */}
             {cfg['__context_memory'] !== '0' && (
               <FormInput
                 label="# of message to memorize"
@@ -167,7 +177,7 @@ const Dialog = {
   },
 };
 
-const FormInput = ({ label, value, onChange, type = 'input' }) => {
+const FormInput = ({ label, value, onChange, type = 'input', placeholder }) => {
   return <>
     <div className="md:flex md:items-center mb-1">
       <div className="md:w-1/3">
@@ -176,11 +186,12 @@ const FormInput = ({ label, value, onChange, type = 'input' }) => {
         </label>
       </div>
       <div className="md:w-2/3">
-        {type === 'input' && <input className="bg-gray-700 appearance-none border-2 border-gray-800 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:border-emerald-600" id={label} type="text" value={value} onChange={onChange} />}
+        {type === 'input' && <input className="bg-gray-700 appearance-none border-2 border-gray-800 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:border-emerald-600" id={label} type="text" value={value} onChange={onChange} placeholder={placeholder} />}
         {type === 'textarea' && <textarea
           className="bg-gray-700 appearance-none border-2 border-gray-800 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:border-emerald-600"
           id={label} value={value} onChange={onChange}
           style={{ height: '4em' }}
+          placeholder={placeholder}
         />}
       </div>
     </div>

@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios').default;
 const config = require('../bin/config');
 const { Server: ServerIO } = require("socket.io");
+var { parseArgsStringToArgv } = require('string-argv');
 
 const { spawn } = require('node:child_process');
 const pathExecAbs = path.join(__dirname, '../bin', config.EXECUTABLE_FILE);
@@ -26,8 +27,10 @@ const DEFAULT_ARGUMENTS = {
   'n_predict': '200',
   'temp': '0.50',
   'repeat_penalty': '1.1',
-  'ctx_size': '5121',
+  'ctx_size': '2048',
   'repeat_last_n': '128',
+  'prompt': '',
+  'color': null,
   '__additional': '--interactive-start',
   '__context_memory': '0',
   '__context_memory_prompt': 'The following is a friendly conversation between human and AI called Alpaca. AI is talkative and provides details from its context.',
@@ -38,14 +41,25 @@ const getArguments = () => {
   const mergedConfig = {...DEFAULT_ARGUMENTS, ...userConfig};
   const additionalArgs = mergedConfig['__additional'];
 
+  /*
+  if (mergedConfig['prompt'].length < 2) {
+    // default prompt
+    delete mergedConfig['prompt'];
+  } else {
+    // clean up and re-format
+    mergedConfig['prompt'] = ` ${mergedConfig['prompt'].trim()}\n\n`;
+  }
+  */
+
   const args = [];
   for (const opt in mergedConfig) {
     if (opt.startsWith('__')) continue; // skip "__arg_name"
     args.push(`--${opt}`);
-    args.push(mergedConfig[opt]);
+    if (mergedConfig[opt] !== null)
+      args.push(mergedConfig[opt]);
   }
 
-  additionalArgs.split(' ').forEach(opt => args.push(opt));
+  parseArgsStringToArgv(additionalArgs).forEach(opt => args.push(opt));
   args.push('--model');
   args.push(modelPathAbs);
   return args;
@@ -65,6 +79,7 @@ let data = {
     }
   }),
   isErrorFileMissing: false,
+  stdoutBuf: '',
 };
 
 const runProc = () => {
@@ -88,13 +103,16 @@ const runProc = () => {
     }
 
     const str = buf.toString();
-    console.log(JSON.stringify({str}))
+    //console.log(JSON.stringify({str}))
     //if (str.match(/\u001b\[3[0-9]m[> \n]{0,3}$/)) { // detect change color
-    if (str.match(/\u001b\[[0-9]+m\n> /)) { // detect change color
+    data.stdoutBuf += str;
+
+    if (data.stdoutBuf.match(/\u001b\[[0-9]+m\n> /)) { // detect change color
       console.log('native: ready');
       data.isLoaded = true;
       data.isReady = true;
       data.current = {};
+      data.stdoutBuf = '';
       data.io.emit('update', { done: true });
     } else if (data.current.chatId) {
       data.current.output += str.replace(/\u001b\[[0-9]+m/g, ''); // terminal color
@@ -123,8 +141,6 @@ const runProc = () => {
 };
 
 runProc();
-
-const delay = ms => new Promise(r => setTimeout(r, ms));
 
 
 /////////////////////////
@@ -184,3 +200,7 @@ server.listen(process.env.WS_PORT, () => {
   console.log(`native bridge listening on *:${process.env.WS_PORT}`);
 });
 
+////////////////////////
+// utils
+
+const delay = ms => new Promise(r => setTimeout(r, ms));
